@@ -1,0 +1,54 @@
+// SQS
+
+    {
+      "Sid": "allow-another-topic",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "sns.amazonaws.com"
+      },
+      "Action": "SQS:SendMessage",
+      "Resource": "arn:aws:sqs:us-east-1:181374483188:myqueue",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:sns:us-east-1:181374483188:s3sns"
+        }
+      }
+    }
+
+// SNS
+
+    {
+      "Sid": "allow-s3-publish",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Action": "SNS:Publish",
+      "Resource": "arn:aws:sns:us-east-1:181374483188:s3sns",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "181374483188"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:::bucketbykc1"
+        }
+      }
+    }
+    
+    {
+      "Sid": "AllowS3Publish",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Action": "SNS:Publish",
+      "Resource": "arn:aws:sns:us-east-1:181374483188:plswork",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "181374483188"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:::YOUR_BUCKET_NAME"
+        }
+      }
+    }
