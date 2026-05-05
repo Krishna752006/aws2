@@ -1,0 +1,97 @@
+Lambda
+create fn
+Author from scratch
+runtime python
+custom role --> LabRole, create
+code copy paste
+Add trigger --> s3, name, all events, add
+DynamoDB with same name as in code
+test, deploy, reload
+s3 add, see in dynamodb
+
+
+
+SNS
+SNS -> create -> standard -> name -> create
+create subscription -> protocol: email, put endpoint, create
+go to email and confirm, publish message
+
+SNS and S3
+s3 bucket
+sns topic (same region both)
+sns topic -> edit -> access policy -> replace SNS topic ARN, Replace s3 bucket ARN, copy paste
+s3 -> properties -> Event notifications-> create
+name, type -> all object create event -> select sns -> save
+test
+
+SQS
+create -> standard, name -> create
+Send and receive messages -> type, send
+Poll for messages and view
+
+S3, SNS, SQS, Lambda
+s3, sns (copy arn), sqs (copy arn)
+s3sns create subscription to sqs
+sqs -> access policy, allow sns add
+sns -> access policy, allow s3 publish
+s3 -> properties -> event notification
+test, from s3 to sqs
+aws lambda
+add trigger as sqs, save
+copy paste, deploy (loki email)
+
+
+
+Elastic Beanstalk
+go -> create, name, web env
+platform -> tomcat, upload .war
+service role, labrole. ec2labinstanceprofile
+vpc default, enable ip, subnets
+instance type t2.micro
+review and create, will take time
+url open
+
+
+
+Lex
+create bot
+Create a blank bot, then name, next, done
+name Intent
+sample utterness -> plain text, add
+add slot, age, number, what is your age?
+slots -> advanced options -> slot capture: success -> add conditional branching
+{age} < 18, some response
+multiple slots create
+Back to intents
+Slot Types -> Add slot type -> add blank slot type -> single, double, suite (custom created)
+that custom slot -> advance options -> slot prompts -> more prompt options -> Add -> add card groups, add buttons Single -> "Single"
+Initial Response -> Welcome to Hotel Booking!
+Confirmation -> Do you want to confirm booking in {location} for {nights} nights?
+Build, Test (Start with Book a Hotel only)
+
+
+
+IAM
+Iam -> uses -> create -> name -> tick on user access -> custom password, put
+Attach policies directly -> s3 full access -> next -> create user
+copy account id number, login and view if s3 if there proper and all else not
+
+IAM CLI
+the iam user -> security credentials -> access keys -> generate -> cli -> warning ack -> next -> any desc -> create
+download csv
+download amazon cli
+aws --version
+aws configure --> from csv, region ap-south-1, output:json
+aws ec2 describe-instances -> to get access denied
+aws s3 ls
+aws s3 mb s3://bucket-name -> creates
+
+IAM Roles
+Roles → Create role -> Select AWS Service -> EC2 -> next
+Add Permissions -> S3FullAccess -> next
+name role -> create
+ec2 instance -> select -> Actions → Security → Modify IAM role
+select the role -> update
+SSH into instance and run:
+aws s3 ls
+aws ec2 describe-instances (this should not work)
