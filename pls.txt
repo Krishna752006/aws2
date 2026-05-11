@@ -10,7 +10,6 @@ test, deploy, reload
 s3 add, see in dynamodb
 
 
-
 SNS
 SNS -> create -> standard -> name -> create
 create subscription -> protocol: email, put endpoint, create
@@ -41,7 +40,6 @@ add trigger as sqs, save
 copy paste, deploy (loki email)
 
 
-
 Elastic Beanstalk
 go -> create, name, web env
 platform -> tomcat, upload .war
@@ -50,7 +48,6 @@ vpc default, enable ip, subnets
 instance type t2.micro
 review and create, will take time
 url open
-
 
 
 Lex
@@ -68,7 +65,6 @@ that custom slot -> advance options -> slot prompts -> more prompt options -> Ad
 Initial Response -> Welcome to Hotel Booking!
 Confirmation -> Do you want to confirm booking in {location} for {nights} nights?
 Build, Test (Start with Book a Hotel only)
-
 
 
 IAM
@@ -95,3 +91,35 @@ select the role -> update
 SSH into instance and run:
 aws s3 ls
 aws ec2 describe-instances (this should not work)
+
+
+EC2
+normal, puttygen (.pem)
+putty (.ppk)
+CloudShell
+
+S3, Replication under management
+Properties, static web hosting
+
+EBS
+Create Volume (region imp), /dev/xvdf, Attach
+Connect and type lsblk
+stop it, in down storage, select volume and edit it
+
+EBS Permanent Mount
+same steps till lsblk
+sudo fdisk /dev/nvme1n1
+n,p,1, , ,w
+sudo mkfs.xfs /dev/nvme1n1p1
+sudo mkdir -p /data
+sudo mount /dev/nvme1n1p1 /data
+sudo blkid /dev/nvme1n1p1
+sudo nano /etc/fstab
+UUID=53b3486f-7e35-480f-8f39-e6dc34ec84e3  /data  xfs  defaults,nofail  0  2
+Reconnect and type df -h
+
+Snapshot
+Select Volume to create Snapshot of, Actions, Create Snapshot
+Go to Snapshots, select, actions, copy, destination, copy (us-west-2)
+go to destination region, select, actions, create volume
+create ec2 and attach it there
