@@ -123,3 +123,43 @@ Select Volume to create Snapshot of, Actions, Create Snapshot
 Go to Snapshots, select, actions, copy, destination, copy (us-west-2)
 go to destination region, select, actions, create volume
 create ec2 and attach it there
+
+EFS
+EC2 with linux (subnet 1a)
+Security Group, add NFS and allow from anywhere
+another ec2 (subnet 1c)
+create efs, customize, in security add the zones and security groups of 2 instances
+yum install -y amazon-efs-utils
+go to efs, attach, mount via dns, copy paste in 2 terminals
+cd efs and see
+
+
+VPC
+create, name, 10.0.0.0/16 (ipv4 cidr)
+Go to Subnets → Create subnet, select, chooze az, enter cidr, create
+Go to Internet Gateways, click Create, Name, Attach to VPC
+Route Tables → Create route table, select vpc,
+Add route Destination: 0.0.0.0/0, Target: Internet Gateway, Associate with public subnet
+same with private route table
+Select Public Subnet, Go to Edit subnet settings, Enable Auto-assign public IPv4 address
+Create a Security Group, Add inbound rules, HTTP(80) / HTTPS(443), SSH(22) from IP, Attach to EC2 
+launch public ec2, private ec2
+
+Load Balancer
+EC2 with linux, in security group allow ssh(22) from your ip and http(80) from 0.0.0.0/0, launch
+yum update -y
+yum install httpd -y 
+systemctl start httpd
+systemctl enable httpd
+echo "This is Server 1" > /var/www/html/index.html 
+same with 2nd ec2, just echo message server 2
+Go to EC2 → Load Balancers → Create Load Balancer → Application Load Balancer
+name, Scheme: Internet-facing, IPv4, listeners http
+Select the deafault VPC where your EC2 instances exist
+Select two /all subnets (one for each instance if possible)
+Choose the lb-sg security group created earlier
+Create a new target group:
+o Name: web-servers-tg
+o Target type: Instance
+o Protocol: HTTP
+o Port: 80 
